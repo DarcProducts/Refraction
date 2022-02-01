@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] UnityEvent OnEnter;
+    [SerializeField] UnityEvent OnExit;
     public bool IsPaused { get; set; }
 
     public void Pause()
@@ -30,4 +30,8 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void QuitGame() => Application.Quit();
+
+    public void OnMouseEnter() => OnEnter?.Invoke();
+
+    public void OnMouseExit() => OnExit?.Invoke();
 }

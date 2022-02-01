@@ -4,7 +4,7 @@ public class WavelengthControler : MonoBehaviour
 {
     public static WavelengthControler S { get; private set; }
     [Header("Colors")]
-    public static WaveType CurrentWaveType = WaveType.None;
+    public static WaveType CurrentWaveType = WaveType.Infrared;
     [SerializeField] ParticleSystem.MinMaxGradient ultraviolet;
     [SerializeField] ParticleSystem.MinMaxGradient infrared;
     ParticleSystem.ColorOverLifetimeModule colorMod;

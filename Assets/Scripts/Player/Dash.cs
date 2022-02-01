@@ -8,10 +8,10 @@ public class Dash : MonoBehaviour
     [SerializeField] GameEvent DashActivated;
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        //if (Input.GetKey(dashKey))
-            //xboost += 500 * Time.deltaTime;
+        if (Input.GetKey(dashKey))
+            xboost += 500 * Time.fixedDeltaTime;
 
         if (Input.GetKeyDown(dashKey))
             DashActivated?.Invoke(gameObject);

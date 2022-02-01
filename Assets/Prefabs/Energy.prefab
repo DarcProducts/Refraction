@@ -386,6 +386,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedFixer: {fileID: 0}
-  collectSpeed: 40
+  collectSpeed: 20
   collectAmount: 100
   OnCollected: {fileID: 11400000, guid: 04894c3b616ac824c91d2175e3305610, type: 2}

@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] int amountPerWave;
     [SerializeField] float spawnRadius;
     [SerializeField] GameEvent SpawnedEnemy;
+    [SerializeField] GameEvent WaveCompleted;
     [SerializeField] bool exponential;
     [SerializeField] Material enemiesLeft;
     [Space(10)]
@@ -21,6 +22,7 @@ public class EnemySpawner : MonoBehaviour
         IsFinishedWave = _currentEnemies.Count == 0;
         if (IsFinishedWave && !startedInvoke)
         {
+            WaveCompleted?.Invoke(gameObject);
             startedInvoke = true;
             Invoke(nameof(SpawnWave), spawnDelay);
         }
@@ -45,11 +47,10 @@ public class EnemySpawner : MonoBehaviour
                 e.transform.position = transform.position + Random.onUnitSphere * spawnRadius;
                 SpawnedEnemy?.Invoke(e);
                 e.SetActive(true);
-                if (e.TryGetComponent<Enemy>(out Enemy enemy))
-                    enemy.SwitchVisibility();
             }
         }
         UpdateEnemiesLeft();
+        ShiftState.S.ShiftToState(WavelengthControler.CurrentWaveType);
         currentWave++;
     }
 
@@ -73,7 +74,7 @@ public class EnemySpawner : MonoBehaviour
             num = amountPerWave * currentWave;
         else
             num = amountPerWave + currentWave;
-        float clampVal = Utils.RemapClamped(_currentEnemies.Count, 0, num, 0, 1);
+        float clampVal = Utils.RemapClamped(_currentEnemies.Count, 0, num, 1, 0);
         enemiesLeft.SetFloat("_XFill", clampVal);
     }
 }

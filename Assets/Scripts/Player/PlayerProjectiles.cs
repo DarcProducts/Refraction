@@ -11,8 +11,11 @@ public class PlayerProjectiles : MonoBehaviour
     [SerializeField] PauseMenu pauseMenu;
     [SerializeField] GameEvent OnFiredProjectile;
     Projectile _currentProjectile;
+    public bool CanFire { get; set; }
 
     void Awake() => player = GameObject.FindWithTag("Player").transform;
+
+    void Start() => CanFire = false;
 
     void Update()
     {
@@ -22,6 +25,7 @@ public class PlayerProjectiles : MonoBehaviour
 
     void ShootProjectile()
     {
+        if (!CanFire) return;
         if (!player.gameObject.activeSelf) return;
         if (pauseMenu.IsPaused) return;
         OnFiredProjectile?.Invoke(gameObject);
@@ -44,4 +48,6 @@ public class PlayerProjectiles : MonoBehaviour
             _currentProjectile.FiredByPlayer = true;
         }
     }
+
+    public void LockFiring(bool newValue) => CanFire = newValue;
 }

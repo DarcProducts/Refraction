@@ -32,17 +32,29 @@ public class Enemy : MonoBehaviour, IDamagable, IWavelength
 
     void OnEnable()
     {
+        _currentHealth = maxHealth;
+        if (parts == null)
+            parts = GetComponent<ParticleSystem>();
+        if (sRend == null)
+            sRend = GetComponent<SpriteRenderer>();
+
         if (Random.value > .5f)
             type = WaveType.Ultraviolet;
         else
             type = WaveType.Infrared;
 
-        if (parts == null)
-            parts = GetComponent<ParticleSystem>();
+        WavelengthControler.S.SetWavelengthColor(parts, type);
+
+        ParticleSystem.MainModule particles = parts.main;
+        particles.startColor = startColor.color;
+
+        if (sRend != null)
+            sRend.color = new Color(1, 1, 1, startColor.color.a);
+
+        SwitchVisibility();
+
         if (speedFixer == null)
             speedFixer = FindObjectOfType<SpeedFixer>();
-        if (sRend == null)
-            sRend = GetComponent<SpriteRenderer>();
         if (enemySpawner == null)
             enemySpawner = FindObjectOfType<EnemySpawner>();
         if (projectilePool == null)
@@ -52,19 +64,12 @@ public class Enemy : MonoBehaviour, IDamagable, IWavelength
 
         IsDamagable = false;
 
-        ParticleSystem.MainModule particles = parts.main;
-        particles.startColor = startColor.color;
-
-        if (sRend != null)
-            sRend.color = new Color(1, 1, 1, startColor.color.a);
-
         _currentHealth = maxHealth;
 
         if (_playerTransform == null)
             _playerTransform = GameObject.FindWithTag("Player").transform;
 
         SetRandomLocation();
-        WavelengthControler.S.SetWavelengthColor(parts, type);
     }
 
     void FixedUpdate()
@@ -172,7 +177,6 @@ public class Enemy : MonoBehaviour, IDamagable, IWavelength
             {
                 parts.Play();
                 sRend.enabled = true;
-                IsVisible = true;
             }
             else
             {
