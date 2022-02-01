@@ -1,12 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] GameObject objectToPool;
-    readonly List<GameObject> pooledObjects = new List<GameObject>();
-    
+    public List<GameObject> pooledObjects { get; set; } = new List<GameObject>();
+
     public GameObject GetObject()
     {
         if (objectToPool == null) return null;

@@ -4753,6 +4753,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e99cc0c0ae5e0d447bc121f60700ce03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedFixer: {fileID: 0}
+  visibilityScale: 0
+  maxDistance: 32
   topOffset: 1
   bottomOffset: 1
 --- !u!199 &65959955458054908

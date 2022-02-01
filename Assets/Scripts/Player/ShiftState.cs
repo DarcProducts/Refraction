@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using darcproducts;
 
 public enum PlayerWaveType
 {
@@ -14,6 +11,7 @@ public class ShiftState : MonoBehaviour
 {
     [SerializeField] KeyCode shiftKey = KeyCode.Mouse1;
     [SerializeField] EnemySpawner spawner;
+    [SerializeField] ObjectPool projectilePool;
     [SerializeField] PlayerWaveType playerShift = PlayerWaveType.Infrared;
     [SerializeField] ParticleSystem backgroundParticle0, backgroundParticle1;
     [SerializeField] AudioFX shiftFX;
@@ -25,37 +23,29 @@ public class ShiftState : MonoBehaviour
     {
         if (Input.GetKeyDown(shiftKey))
         {
-            if(playerShift == PlayerWaveType.Infrared)
+            if (playerShift == PlayerWaveType.Infrared)
+            {
+                WavelengthControler.CurrentWaveType = WaveType.Ultraviolet;
                 playerShift = PlayerWaveType.Ultraviolet;
+            }
             else if (playerShift == PlayerWaveType.Ultraviolet)
+            {
+                WavelengthControler.CurrentWaveType = WaveType.Infrared;
                 playerShift = PlayerWaveType.Infrared;
+            }
+            
             SwitchBackgroundColors();
+            
             if (shiftFX != null)
                 shiftFX.PlayFX();
-        }
 
-        foreach (GameObject obj in spawner._currentEnemies){
-            if(obj.GetComponent<Enemy>().type == WaveType.Ultraviolet && playerShift == PlayerWaveType.Infrared)
-            {
-                obj.GetComponent<ParticleSystem>().Stop();
-                obj.GetComponent<SpriteRenderer>().enabled = false;
-            }
-            else if (obj.GetComponent<Enemy>().type == WaveType.Ultraviolet && playerShift == PlayerWaveType.Ultraviolet)
-            {
-                obj.GetComponent<ParticleSystem>().Play();
-                obj.GetComponent<SpriteRenderer>().enabled = true;
-            }
+            foreach (GameObject obj in spawner._currentEnemies)
+                if (obj.TryGetComponent<Enemy>(out Enemy e))
+                    e.SwitchVisibility();
 
-            if (obj.GetComponent<Enemy>().type == WaveType.Infrared && playerShift == PlayerWaveType.Ultraviolet)
-            {
-                obj.GetComponent<ParticleSystem>().Stop();
-                obj.GetComponent<SpriteRenderer>().enabled = false;
-            }
-            else if (obj.GetComponent<Enemy>().type == WaveType.Infrared && playerShift == PlayerWaveType.Infrared)
-            {
-                obj.GetComponent<ParticleSystem>().Play();
-                obj.GetComponent<SpriteRenderer>().enabled = true;
-            }
+            foreach (GameObject obj in projectilePool.pooledObjects)
+                if (obj.TryGetComponent<Projectile>(out Projectile e))
+                    e.SwitchVisibility();
         }
     }
 

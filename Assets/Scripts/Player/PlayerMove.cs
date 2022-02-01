@@ -8,6 +8,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float moveForce;
     [SerializeField] float reflectForce;
     [SerializeField] float topOffset, bottomOffset;
+    [SerializeField] SpeedFixer speedFixer;
     [Header("Event")]
     [SerializeField] GameEvent OnHitWall;
     [SerializeField] GameEvent PassedThrough;
@@ -60,8 +61,8 @@ public class PlayerMove : MonoBehaviour
 
     public void MovePlayer(Vector2 value)
     {
-        if (rigid == null) return;
-        rigid.AddForce(moveForce * Time.fixedDeltaTime * value, ForceMode.VelocityChange);
+        if (rigid == null || speedFixer == null) return;
+        rigid.AddForce(moveForce * speedFixer.speedMutliplier * Time.fixedDeltaTime * value, ForceMode.VelocityChange);
     }
 
     Vector2 GetVelocityAndHalt()
@@ -73,9 +74,9 @@ public class PlayerMove : MonoBehaviour
 
     void Reflect(Vector2 outDirection)
     {
-        if (rigid == null) return;
+        if (rigid == null || speedFixer == null) return;
         if (OnHitWall != null)
             OnHitWall?.Invoke(gameObject);
-        rigid.AddForce(reflectForce * Time.fixedDeltaTime * outDirection, ForceMode.Impulse);
+        rigid.AddForce(reflectForce * Time.fixedDeltaTime * speedFixer.speedMutliplier * outDirection, ForceMode.Impulse);
     }
 }

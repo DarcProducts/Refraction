@@ -385,6 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70d535e77437d4441929a5ad316fd76b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectSpeed: 10
+  speedFixer: {fileID: 0}
+  collectSpeed: 40
   collectAmount: 100
   OnCollected: {fileID: 11400000, guid: 04894c3b616ac824c91d2175e3305610, type: 2}

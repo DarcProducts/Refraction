@@ -48,14 +48,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc29438c264fb6349bc0ad389e17210e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedFixer: {fileID: 0}
   fireRate: 2
-  moveSpeed: 5
+  moveRandomness: 16
+  moveSpeed: 3
   maxHealth: 100
   projectileDamage: 100
-  collideDamage: 200
-  projectileSpeed: 5
+  collideDamage: 100
+  projectileSpeed: 1
   maxFireDistance: 64
-  type: 0
+  aimOffset: 1.2
   EnemyHasDied: {fileID: 11400000, guid: efc0c8f363695784ca2eb7ad5bac4ba7, type: 2}
   OnEnemyHit: {fileID: 11400000, guid: 3696074f4fe524243a796a61cf44c9df, type: 2}
   startColor:

@@ -39,6 +39,7 @@ public class PlayerProjectiles : MonoBehaviour
             _currentProjectile.projectileSpeed = projectileSpeed;
             _currentProjectile.projectileDamage = projectileDamage;
             _currentProjectile.currentDirection = (mousePos3D - player.position).normalized;
+            _currentProjectile.SetWaveType(WaveType.All);
             pObj.SetActive(true);
             _currentProjectile.FiredByPlayer = true;
         }
