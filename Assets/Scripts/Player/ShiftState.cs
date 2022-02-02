@@ -15,41 +15,16 @@ public class ShiftState : MonoBehaviour
     [SerializeField] ObjectPool projectilePool;
     [SerializeField] PlayerWaveType playerShift = PlayerWaveType.Infrared;
     [SerializeField] ParticleSystem backgroundParticle0, backgroundParticle1;
-    [SerializeField] AudioFX shiftFX;
+    [SerializeField] GameEvent ShiftedState;
 
     void Awake() => S = this;
 
     private void Start() => SwitchBackgroundColors();
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(shiftKey))
-        {
-            if (playerShift == PlayerWaveType.Infrared)
-            {
-                WavelengthControler.CurrentWaveType = WaveType.Ultraviolet;
-                playerShift = PlayerWaveType.Ultraviolet;
-            }
-            else if (playerShift == PlayerWaveType.Ultraviolet)
-            {
-                WavelengthControler.CurrentWaveType = WaveType.Infrared;
-                playerShift = PlayerWaveType.Infrared;
-            }
-            
-            SwitchBackgroundColors();
-            
-            if (shiftFX != null)
-                shiftFX.PlayFX();
-
-            foreach (GameObject obj in spawner._currentEnemies)
-                if (obj.TryGetComponent<Enemy>(out Enemy e))
-                    e.SwitchVisibility();
-
-            foreach (GameObject obj in projectilePool.pooledObjects)
-                if (obj.TryGetComponent<Projectile>(out Projectile e))
-                    e.SwitchVisibility();
-        }
+            ShiftCurrentState();
     }
 
     public void ShiftCurrentState()
@@ -67,9 +42,6 @@ public class ShiftState : MonoBehaviour
 
         SwitchBackgroundColors();
 
-        if (shiftFX != null)
-            shiftFX.PlayFX();
-
         foreach (GameObject obj in spawner._currentEnemies)
             if (obj.TryGetComponent<Enemy>(out Enemy e))
                 e.SwitchVisibility();
@@ -77,8 +49,15 @@ public class ShiftState : MonoBehaviour
         foreach (GameObject obj in projectilePool.pooledObjects)
             if (obj.TryGetComponent<Projectile>(out Projectile e))
                 e.SwitchVisibility();
+
+        ShiftedState?.Invoke(gameObject);
     }
 
+    /// <summary>
+    /// hack
+    /// used on EnemySpawner when start of wave to insure only one enemy is visible after wave spawn.. 
+    /// not sure if they will be both active at once still (lack of testing time)
+    /// </summary>
     public void ShiftToState(WaveType type)
     {
         WaveType w = type;
@@ -91,13 +70,11 @@ public class ShiftState : MonoBehaviour
         {
             WavelengthControler.CurrentWaveType = WaveType.Infrared;
             playerShift = PlayerWaveType.Infrared;
-
         }
 
-        SwitchBackgroundColors();
+        WavelengthControler.S.SetLightColor();
 
-        if (shiftFX != null)
-            shiftFX.PlayFX();
+        SwitchBackgroundColors();
 
         foreach (GameObject obj in spawner._currentEnemies)
             if (obj.TryGetComponent<Enemy>(out Enemy e))

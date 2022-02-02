@@ -15,6 +15,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] int currentWave = 1;
     bool IsFinishedWave;
     bool startedInvoke;
+    bool newGame = true;
     public readonly List<GameObject> _currentEnemies = new List<GameObject>();
 
     void LateUpdate()
@@ -22,7 +23,9 @@ public class EnemySpawner : MonoBehaviour
         IsFinishedWave = _currentEnemies.Count == 0;
         if (IsFinishedWave && !startedInvoke)
         {
-            WaveCompleted?.Invoke(gameObject);
+            if (!newGame)
+                WaveCompleted?.Invoke(gameObject);
+            newGame = false;
             startedInvoke = true;
             Invoke(nameof(SpawnWave), spawnDelay);
         }
@@ -74,7 +77,7 @@ public class EnemySpawner : MonoBehaviour
             num = amountPerWave * currentWave;
         else
             num = amountPerWave + currentWave;
-        float clampVal = Utils.RemapClamped(_currentEnemies.Count, 0, num, 1, 0);
+        float clampVal = Utils.RemapClamped(_currentEnemies.Count, 0, num, 0, 1);
         enemiesLeft.SetFloat("_XFill", clampVal);
     }
 }

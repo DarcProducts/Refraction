@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - _XFill: 0.86
+    - _XFill: 1
     - _YFill: 1
     - _amplitude: 3
     - _emission: 2
